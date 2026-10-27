@@ -129,7 +129,7 @@ rooms.forEach(room => {
     const marker = document.createElement("div");
     marker.className = "marker";
     marker.id = room;
-    marker.textContent = room;
+    marker.textContent = "";
 
     let pos =
         JSON.parse(localStorage.getItem(room))
