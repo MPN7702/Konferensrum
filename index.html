@@ -58,7 +58,6 @@ body{
     width:1900px;
     height:auto;
     max-width:none;
-    pointer-events:none;
     user-select:none;
 }
 
@@ -70,7 +69,7 @@ body{
     border:2px solid #008000;
     border-radius:6px;
     display:none;
-    pointer-events:none;
+    cursor:move;
     box-shadow:0 0 15px rgba(0,255,0,0.8);
 }
 
@@ -168,6 +167,49 @@ rooms.forEach(room => {
     marker.style.top = positions[room].y + "px";
 
     map.appendChild(marker);
+
+    let dragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    marker.addEventListener("mousedown", e => {
+
+        dragging = true;
+
+        offsetX = e.clientX - marker.offsetLeft;
+        offsetY = e.clientY - marker.offsetTop;
+
+        e.preventDefault();
+
+    });
+
+    document.addEventListener("mousemove", e => {
+
+        if(!dragging) return;
+
+        marker.style.left =
+            (e.clientX - offsetX) + "px";
+
+        marker.style.top =
+            (e.clientY - offsetY) + "px";
+
+    });
+
+    document.addEventListener("mouseup", () => {
+
+        if(!dragging) return;
+
+        dragging = false;
+
+        console.log(
+            room,
+            {
+                x: parseInt(marker.style.left),
+                y: parseInt(marker.style.top)
+            }
+        );
+
+    });
 
     btn.addEventListener("click", () => {
 
