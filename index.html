@@ -77,6 +77,24 @@ body{
     display:block;
 }
 
+#lockButton{
+    position:absolute;
+    left:35%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    z-index:1000;
+
+    padding:10px 20px;
+    font-size:16px;
+    font-weight:bold;
+
+    background:#ffcc00;
+    border:2px solid #666;
+    border-radius:6px;
+
+    cursor:pointer;
+}
+
 </style>
 </head>
 
@@ -88,15 +106,23 @@ body{
 
 <div id="mapContainer">
     <div id="map">
+
         <img
             src="Konf-rum.jpg"
             width="1900"
             draggable="false"
             alt="Konferenskarta">
+
+        <button id="lockButton">
+            Lås boxar
+        </button>
+
     </div>
 </div>
 
 <script>
+
+let boxesLocked = false;
 
 const rooms = [
     "Brocken",
@@ -125,28 +151,28 @@ const rooms = [
 
 const positions = {
 
-    "Brocken": {x:1206,y:647},
-    "Fryken": {x:1173,y:646},
-    "Granberget plan 2": {x:1182,y:571},
-    "Gräsberget plan 2": {x:1495,y:7},
-    "Hovfjället plan 2": {x:1471,y:86},
-    "Hänsjön": {x:1151,y:527},
-    "Kymmen": {x:1094,y:414},
-    "Kläggen": {x:1140,y:338},
-    "Kälksjön": {x:508,y:357},
-    "Letten": {x:1205,y:593},
-    "Lilla utb-salen": {x:254,y:280},
-    "Ljusnan": {x:1700,y:417},
-    "Stora utb-salen": {x:250,y:212},
-    "Mangen": {x:218,y:63},
-    "Nya matsalen": {x:1109,y:733},
-    "Röjden": {x:1503,y:978},
-    "Sirsjön": {x:322,y:187},
-    "Tossebergsklätten plan 2": {x:1029,y:576},
-    "Valberget plan 2": {x:1203,y:415},
-    "Vassjön": {x:1204,y:557},
-    "Velen": {x:1073,y:613},
-    "Vägsjön": {x:1195,y:530}
+    "Brocken": {x:1244,y:666},
+    "Fryken": {x:1211,y:667},
+    "Granberget plan 2": {x:1222,y:593},
+    "Gräsberget plan 2": {x:1546,y:3},
+    "Hovfjället plan 2": {x:1517,y:65},
+    "Hänsjön": {x:1186,y:543},
+    "Kymmen": {x:1126,y:427},
+    "Kläggen": {x:1177,y:349},
+    "Kälksjön": {x:521,y:369},
+    "Letten": {x:1242,y:610},
+    "Lilla utb-salen": {x:261,y:290},
+    "Ljusnan": {x:1754,y:429},
+    "Stora utb-salen": {x:254,y:223},
+    "Mangen": {x:225,y:61},
+    "Nya matsalen": {x:1151,y:757},
+    "Röjden": {x:1548,y:1009},
+    "Sirsjön": {x:334,y:194},
+    "Tossebergsklätten plan 2": {x:1063,y:595},
+    "Valberget plan 2": {x:1239,y:428},
+    "Vassjön": {x:1243,y:575},
+    "Velen": {x:1107,y:634},
+    "Vägsjön": {x:1234,y:548}
 
 };
 
@@ -173,6 +199,8 @@ rooms.forEach(room => {
     let offsetY = 0;
 
     marker.addEventListener("mousedown", e => {
+
+        if(boxesLocked) return;
 
         dragging = true;
 
@@ -223,6 +251,27 @@ rooms.forEach(room => {
         btn.classList.add("selected");
 
     });
+
+});
+
+document.getElementById("lockButton")
+.addEventListener("click", () => {
+
+    boxesLocked = !boxesLocked;
+
+    const btn = document.getElementById("lockButton");
+
+    if(boxesLocked){
+
+        btn.textContent = "Boxar låsta";
+        btn.style.background = "#00cc00";
+
+    }else{
+
+        btn.textContent = "Lås boxar";
+        btn.style.background = "#ffcc00";
+
+    }
 
 });
 
