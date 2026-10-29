@@ -35,7 +35,9 @@ body{
     margin-top:0;
     font-size:clamp(18px,1.4vw,28px);
 }
-
+#roomList{
+    flex:1;
+}
 .room{
     padding:clamp(4px,0.5vw,8px);
     margin:2px 0;
@@ -141,6 +143,8 @@ body{
 <div id="sidebar">
     <h2>Konferensrum</h2>
 
+    <div id="roomList"></div>
+
     <button id="lockButton">
         Rum låsta
     </button>
@@ -218,7 +222,7 @@ const positions = {
 
 };
 
-const sidebar = document.getElementById("sidebar");
+const sidebar = document.getElementById("roomList");
 const map = document.getElementById("map");
 const img = document.getElementById("mapImage");
 
