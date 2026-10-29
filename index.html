@@ -268,13 +268,9 @@ rooms.forEach(room => {
 
         dragging = false;
 
-        console.log(
-            room.name,
-            {
-                x: parseInt(marker.style.left),
-                y: parseInt(marker.style.top)
-            }
-        );
+console.log(
+    `"${room.name}": {x:${((parseInt(marker.style.left)/img.clientWidth)*100).toFixed(4)}, y:${((parseInt(marker.style.top)/img.clientHeight)*100).toFixed(4)}}`
+);
 
     });
 
