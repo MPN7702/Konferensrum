@@ -79,7 +79,6 @@ body{
 
 #lockButton{
     position:absolute;
-
     left:20px;
     bottom:20px;
 
@@ -89,7 +88,7 @@ body{
     font-size:16px;
     font-weight:bold;
 
-    background:#ffcc00;
+    background:#00cc00;
     border:2px solid #666;
     border-radius:6px;
 
@@ -106,6 +105,7 @@ body{
 </div>
 
 <div id="mapContainer">
+
     <div id="map">
 
         <img
@@ -115,15 +115,16 @@ body{
             alt="Konferenskarta">
 
         <button id="lockButton">
-            Lås boxar
+            Boxar låsta
         </button>
 
     </div>
+
 </div>
 
 <script>
 
-let boxesLocked = false;
+let boxesLocked = true;
 
 const rooms = [
     "Brocken",
@@ -269,7 +270,7 @@ document.getElementById("lockButton")
 
     }else{
 
-        btn.textContent = "Lås boxar";
+        btn.textContent = "Boxar upplåsta";
         btn.style.background = "#ffcc00";
 
     }
