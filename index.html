@@ -239,12 +239,45 @@ const img = document.getElementById("mapImage");
 
 function positionMarker(marker, roomName){
 
+    const imageRatio = 2895 / 1598;
+
+    const containerWidth = map.clientWidth;
+    const containerHeight = map.clientHeight;
+
+    let imageWidth;
+    let imageHeight;
+    let offsetX;
+    let offsetY;
+
+    if(containerWidth / containerHeight > imageRatio){
+
+        imageHeight = containerHeight;
+        imageWidth = imageHeight * imageRatio;
+
+        offsetX = (containerWidth - imageWidth) / 2;
+        offsetY = 0;
+
+    }else{
+
+        imageWidth = containerWidth;
+        imageHeight = imageWidth / imageRatio;
+
+        offsetX = 0;
+        offsetY = (containerHeight - imageHeight) / 2;
+
+    }
+
     marker.style.left =
-        ((img.clientWidth * positions[roomName].x) / 100) + "px";
+        offsetX +
+        (imageWidth * positions[roomName].x / 100)
+        + "px";
 
     marker.style.top =
-        ((img.clientHeight * positions[roomName].y) / 100) + "px";
+        offsetY +
+        (imageHeight * positions[roomName].y / 100)
+        + "px";
 }
+
 
 rooms.forEach(room => {
 
