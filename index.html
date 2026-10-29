@@ -9,7 +9,7 @@
 
 body{
     margin:0;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
     display:flex;
     height:100vh;
     overflow:hidden;
@@ -72,6 +72,8 @@ body{
     display:none;
     pointer-events:none;
     box-shadow:0 0 15px rgba(0,255,0,0.8);
+
+    transform:translate(-50%,-50%);
 }
 
 .marker.active{
@@ -88,69 +90,78 @@ body{
 </div>
 
 <div id="mapContainer">
-
     <div id="map">
-        <img src="Konf-rum.jpg" width="1900" draggable="false" alt="Konferenskarta">
+        <img id="mapImage"
+             src="Konf-rum.jpg"
+             width="1900"
+             draggable="false"
+             alt="Konferenskarta">
     </div>
-
 </div>
 
 <script>
 
 const rooms = [
-    "Brocken",
-    "Fryken",
-    "Granberget plan 2",
-    "Gräsberget plan 2",
-    "Hovfjället plan 2",
-    "Hänsjön",
-    "Kymmen",
-    "Kläggen",
-    "Kälksjön",
-    "Letten",
-    "Lilla utb-salen",
-    "Ljusnan",
-    "Stora utb-salen",
-    "Mangen",
-    "Nya matsalen",
-    "Röjden",
-    "Sirsjön",
-    "Tossebergsklätten plan 2",
-    "Valberget plan 2",
-    "Vassjön",
-    "Velen",
-    "Vägsjön"
+"Brocken",
+"Fryken",
+"Granberget plan 2",
+"Gräsberget plan 2",
+"Hovfjället plan 2",
+"Hänsjön",
+"Kymmen",
+"Kläggen",
+"Kälksjön",
+"Letten",
+"Lilla utb-salen",
+"Ljusnan",
+"Stora utb-salen",
+"Mangen",
+"Nya matsalen",
+"Röjden",
+"Sirsjön",
+"Tossebergsklätten plan 2",
+"Valberget plan 2",
+"Vassjön",
+"Velen",
+"Vägsjön"
 ];
+
+/*
+Koordinater från din gamla karta
+Bildbredd: 1900 px
+Bildhöjd: ca 1070 px
+*/
 
 const positions = {
 
-    "Brocken": {x:1206,y:647},
-    "Fryken": {x:1173,y:646},
-    "Granberget plan 2": {x:1182,y:571},
-    "Gräsberget plan 2": {x:1495,y:7},
-    "Hovfjället plan 2": {x:1471,y:86},
-    "Hänsjön": {x:1151,y:527},
-    "Kymmen": {x:1094,y:414},
-    "Kläggen": {x:1140,y:338},
-    "Kälksjön": {x:508,y:357},
-    "Letten": {x:1205,y:593},
-    "Lilla utb-salen": {x:254,y:280},
-    "Ljusnan": {x:1700,y:417},
-    "Stora utb-salen": {x:250,y:212},
-    "Mangen": {x:218,y:63},
-    "Nya matsalen": {x:1109,y:733},
-    "Röjden": {x:1503,y:978},
-    "Sirsjön": {x:322,y:187},
-    "Tossebergsklätten plan 2": {x:1029,y:576},
-    "Valberget plan 2": {x:1203,y:415},
-    "Vassjön": {x:1204,y:557},
-    "Velen": {x:1073,y:613},
-    "Vägsjön": {x:1195,y:530}
+"Brocken":                 {x:63.47,y:60.47},
+"Fryken":                  {x:61.74,y:60.37},
+"Granberget plan 2":       {x:62.21,y:53.36},
+"Gräsberget plan 2":       {x:78.68,y:0.65},
+"Hovfjället plan 2":       {x:77.42,y:8.04},
+"Hänsjön":                 {x:60.58,y:49.25},
+"Kymmen":                  {x:57.58,y:38.69},
+"Kläggen":                 {x:60.00,y:31.59},
+"Kälksjön":                {x:26.74,y:33.36},
+"Letten":                  {x:63.42,y:55.42},
+"Lilla utb-salen":         {x:13.37,y:26.17},
+"Ljusnan":                 {x:89.47,y:38.97},
+"Stora utb-salen":         {x:13.16,y:19.81},
+"Mangen":                  {x:11.47,y:5.89},
+"Nya matsalen":            {x:58.37,y:68.50},
+"Röjden":                  {x:79.11,y:91.40},
+"Sirsjön":                 {x:16.95,y:17.48},
+"Tossebergsklätten plan 2":{x:54.16,y:53.83},
+"Valberget plan 2":        {x:63.32,y:38.79},
+"Vassjön":                 {x:63.37,y:52.06},
+"Velen":                   {x:56.47,y:57.29},
+"Vägsjön":                 {x:62.89,y:49.53}
 
 };
 
 const sidebar = document.getElementById("sidebar");
 const map = document.getElementById("map");
+const img = document.getElementById("mapImage");
 
 rooms.forEach(room => {
 
@@ -162,25 +173,44 @@ rooms.forEach(room => {
     const marker = document.createElement("div");
     marker.className = "marker";
 
-    marker.style.left = positions[room].x + "px";
-    marker.style.top  = positions[room].y + "px";
+    marker.dataset.room = room;
 
     map.appendChild(marker);
 
     btn.addEventListener("click", () => {
 
-        document.querySelectorAll(".marker")
+        document
+            .querySelectorAll(".marker")
             .forEach(m => m.classList.remove("active"));
 
-        document.querySelectorAll(".room")
+        document
+            .querySelectorAll(".room")
             .forEach(r => r.classList.remove("selected"));
 
         marker.classList.add("active");
         btn.classList.add("selected");
-
     });
 
 });
+
+function positionMarkers(){
+
+    document.querySelectorAll(".marker").forEach(marker => {
+
+        const room = marker.dataset.room;
+        const pos = positions[room];
+
+        marker.style.left =
+            (img.clientWidth * pos.x / 100) + "px";
+
+        marker.style.top =
+            (img.clientHeight * pos.y / 100) + "px";
+    });
+
+}
+
+window.addEventListener("load", positionMarkers);
+window.addEventListener("resize", positionMarkers);
 
 </script>
 
