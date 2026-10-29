@@ -16,7 +16,7 @@ body{
 }
 
 #sidebar{
-    width:260px;
+    width:320px;
     background:#f4f4f4;
     border-right:1px solid #ccc;
     overflow-y:auto;
@@ -31,6 +31,10 @@ body{
     border:1px solid #bbb;
     border-radius:4px;
     cursor:pointer;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
 .room:hover{
@@ -40,6 +44,17 @@ body{
 .room.selected{
     background:#c8ffc8;
     font-weight:bold;
+}
+
+.room-name{
+    flex:1;
+}
+
+.room-seats{
+    margin-left:10px;
+    font-weight:bold;
+    color:#444;
+    white-space:nowrap;
 }
 
 #mapContainer{
@@ -127,54 +142,56 @@ body{
 let boxesLocked = true;
 
 const rooms = [
-    "Brocken                  4P",
-    "Fryken                   10P",
-    "Granberget plan 2        16P",
-    "Gräsberget plan 2        12P",
-    "Hovfjället plan 2        12P",
-    "Hänsjön                  2P",
-    "Kymmen                   4P",
-    "Kläggen                  5P",
-    "Kälksjön                 10P",
-    "Letten                   6P",
-    "Lilla utb-salen          10P",
-    "Ljusnan                  10P",
-    "Stora utb-salen          30+P",
-    "Mangen                   16P",
-    "Nya matsalen             200+P",
-    "Röjden                   16P",
-    "Sirsjön                  10P",
-    "Tossebergsklätten plan 2 18P",
-    "Valberget plan 2         8P",
-    "Vassjön                  8P",
-    "Velen                    4P",
-    "Vägsjön                  4P"
+
+    {name:"Brocken", seats:"4P"},
+    {name:"Fryken", seats:"10P"},
+    {name:"Granberget plan 2", seats:"16P"},
+    {name:"Gräsberget plan 2", seats:"12P"},
+    {name:"Hovfjället plan 2", seats:"12P"},
+    {name:"Hänsjön", seats:"2P"},
+    {name:"Kymmen", seats:"4P"},
+    {name:"Kläggen", seats:"5P"},
+    {name:"Kälksjön", seats:"10P"},
+    {name:"Letten", seats:"6P"},
+    {name:"Lilla utb-salen", seats:"10P"},
+    {name:"Ljusnan", seats:"10P"},
+    {name:"Stora utb-salen", seats:"30+P"},
+    {name:"Mangen", seats:"16P"},
+    {name:"Nya matsalen", seats:"200+P"},
+    {name:"Röjden", seats:"16P"},
+    {name:"Sirsjön", seats:"10P"},
+    {name:"Tossebergsklätten plan 2", seats:"18P"},
+    {name:"Valberget plan 2", seats:"8P"},
+    {name:"Vassjön", seats:"8P"},
+    {name:"Velen", seats:"4P"},
+    {name:"Vägsjön", seats:"4P"}
+
 ];
 
 const positions = {
 
-    "Brocken                  4P": {x:1244,y:666},
-    "Fryken                   10P": {x:1211,y:667},
-    "Granberget plan 2        16P": {x:1222,y:593},
-    "Gräsberget plan 2        12P": {x:1546,y:3},
-    "Hovfjället plan 2        12P": {x:1517,y:65},
-    "Hänsjön                  2P": {x:1186,y:543},
-    "Kymmen                   4P": {x:1126,y:427},
-    "Kläggen                  5P": {x:1177,y:349},
-    "Kälksjön                 10P": {x:521,y:369},
-    "Letten                   6P": {x:1242,y:610},
-    "Lilla utb-salen          10P": {x:261,y:290},
-    "Ljusnan                  10P": {x:1754,y:429},
-    "Stora utb-salen          30+P": {x:254,y:223},
-    "Mangen                   16P": {x:225,y:61},
-    "Nya matsalen             200+P": {x:1151,y:757},
-    "Röjden                   16P": {x:1548,y:1009},
-    "Sirsjön                  10P": {x:334,y:194},
-    "Tossebergsklätten plan 2 18P": {x:1063,y:595},
-    "Valberget plan 2         8P": {x:1239,y:428},
-    "Vassjön                  8P": {x:1243,y:575},
-    "Velen                    4P": {x:1107,y:634},
-    "Vägsjön                  4P": {x:1234,y:548}
+    "Brocken": {x:1244,y:666},
+    "Fryken": {x:1211,y:667},
+    "Granberget plan 2": {x:1222,y:593},
+    "Gräsberget plan 2": {x:1546,y:3},
+    "Hovfjället plan 2": {x:1517,y:65},
+    "Hänsjön": {x:1186,y:543},
+    "Kymmen": {x:1126,y:427},
+    "Kläggen": {x:1177,y:349},
+    "Kälksjön": {x:521,y:369},
+    "Letten": {x:1242,y:610},
+    "Lilla utb-salen": {x:261,y:290},
+    "Ljusnan": {x:1754,y:429},
+    "Stora utb-salen": {x:254,y:223},
+    "Mangen": {x:225,y:61},
+    "Nya matsalen": {x:1151,y:757},
+    "Röjden": {x:1548,y:1009},
+    "Sirsjön": {x:334,y:194},
+    "Tossebergsklätten plan 2": {x:1063,y:595},
+    "Valberget plan 2": {x:1239,y:428},
+    "Vassjön": {x:1243,y:575},
+    "Velen": {x:1107,y:634},
+    "Vägsjön": {x:1234,y:548}
 
 };
 
@@ -185,14 +202,19 @@ rooms.forEach(room => {
 
     const btn = document.createElement("div");
     btn.className = "room";
-    btn.textContent = room;
+
+    btn.innerHTML = `
+        <span class="room-name">${room.name}</span>
+        <span class="room-seats">${room.seats}</span>
+    `;
+
     sidebar.appendChild(btn);
 
     const marker = document.createElement("div");
     marker.className = "marker";
 
-    marker.style.left = positions[room].x + "px";
-    marker.style.top = positions[room].y + "px";
+    marker.style.left = positions[room.name].x + "px";
+    marker.style.top = positions[room.name].y + "px";
 
     map.appendChild(marker);
 
@@ -232,7 +254,7 @@ rooms.forEach(room => {
         dragging = false;
 
         console.log(
-            room,
+            room.name,
             {
                 x: parseInt(marker.style.left),
                 y: parseInt(marker.style.top)
